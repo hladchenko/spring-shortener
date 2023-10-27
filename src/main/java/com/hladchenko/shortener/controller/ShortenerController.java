@@ -1,6 +1,8 @@
 package com.hladchenko.shortener.controller;
 
 import com.hladchenko.shortener.service.ShortenerService;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +23,9 @@ public class ShortenerController {
     }
 
     @GetMapping("/{shortUrl}")
-    public String getFullUrl(@PathVariable String shortUrl) {
-        return shortenerService.getFullUrl(shortUrl);
+    public ResponseEntity<String> getFullUrl(@PathVariable String shortUrl) {
+        return ResponseEntity
+                .status(HttpStatus.MOVED_PERMANENTLY)
+                .header(HttpHeaders.LOCATION, shortenerService.getFullUrl(shortUrl)).build();
     }
 }
